@@ -110,8 +110,8 @@
 				456737AF1D27984400D9BE2E /* SharedQueue.h */,
 			);
 			name = ActorSystem;
-			path = "/Users/msmith/Documents/Summer 2016/ActorModel/ActorModel/ActorSystem";
-			sourceTree = "<absolute>";
+			path = ActorModel/ActorSystem;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
