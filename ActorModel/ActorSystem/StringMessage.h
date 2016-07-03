@@ -16,19 +16,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef TestActor2_h
-#define TestActor2_h
+#ifndef StringMessage_h
+#define StringMessage_h
 
-#include <iostream>
-#include "Actor.h"
+#include <string>
+#include "ActorMessage.h"
 
-class TestActor2 : public Actor {
-public:
-    TestActor2();
-    size_t count = 0;
-    size_t limit = 5;
-    
-    void receive(const ActorRef& sender, const ActorMessage* msg) override;
+/*
+ * StringMessage
+ * This is the expected message type for the logging mechanism.
+ */
+class StringMessage : public ActorMessage {
+    public:
+        const std::string msg;
+        StringMessage(const std::string msg);
 };
 
-#endif /* TestActor2_h */
+#endif /* StringMessage_h */

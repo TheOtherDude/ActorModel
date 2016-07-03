@@ -1,10 +1,20 @@
-//
-//  main.cpp
-//  ActorModel
-//
-//  Created by Matt on 7/1/16.
-//  Copyright © 2016 Matt. All rights reserved.
-//
+/*
+ * Copyright (C) 2016  Matt Smith
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #include <iostream>
 #include <thread>
@@ -12,6 +22,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "ActorSystem.h"
+#include "StringMessage.h"
 #include "TestActor.h"
 #include "TestActor2.h"
 
@@ -24,8 +35,8 @@ void generateMessages(const std::vector<ActorRef> actorRefs, size_t amount) {
     for (size_t i=0; i<amount/2; i++) {
         int target1 = rand() % actorRefs.size();
         int target2 = rand() % actorRefs.size();
-        actorRefs[target1].send(actorRefs[target2], ActorMessage(msg));
-        actorRefs[target2].send(actorRefs[target1], ActorMessage(msg));
+        actorRefs[target1].send(actorRefs[target2], new StringMessage(msg));
+        actorRefs[target2].send(actorRefs[target1], new StringMessage(msg));
         numMessagesSent += 2;
     }
 }
@@ -50,25 +61,30 @@ int main(int argc, const char * argv[]) {
         actorRefs.push_back(actorSystem.createActor(new TestActor2()));
     }
     
+    // Test the logging and dynamic casting mechanisms
+    actorSystem.getLoggingActor().send(test, new StringMessage("Main: Sending logger an invalid message..."));
+    actorSystem.getLoggingActor().send(test, new ActorMessage());
+    numMessagesSent += 2;
+    
     // Heres some message generating threads
     size_t numThreads = 6;
     size_t messagesAmount = 2000000;
     numMessagesSent = 0;
     
-    actorSystem.getLoggingActor().send(test, ActorMessage("Main: Sending " + std::to_string(messagesAmount*numThreads) + " messages..."));
+    actorSystem.getLoggingActor().send(test, new StringMessage("Main: Sending " + std::to_string(messagesAmount*numThreads) + " messages..."));
     numMessagesSent++;
     std::vector<std::thread> threads;
     for (size_t i=0; i<numThreads; i++) {
         threads.push_back(std::thread(&generateMessages, actorRefs, messagesAmount));
     }
     
-    actorSystem.getLoggingActor().send(test, ActorMessage("Main: Joining message spawning threads..."));
+    actorSystem.getLoggingActor().send(test, new StringMessage("Main: Joining message spawning threads..."));
     numMessagesSent++;
     for (auto& thr : threads) {
         thr.join();
     }
     
-    actorSystem.getLoggingActor().send(test, ActorMessage("Main: Finished sending all messages to the ActorSystem. Waiting 60 seconds before shutting down..."));
+    actorSystem.getLoggingActor().send(test, new StringMessage("Main: Finished sending all messages to the ActorSystem. Waiting 60 seconds before shutting down..."));
     numMessagesSent++;
     std::this_thread::sleep_for(std::chrono::seconds(60));
     

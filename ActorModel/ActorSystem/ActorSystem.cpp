@@ -1,10 +1,20 @@
-//
-//  ActorSystem.cpp
-//  ActorModel
-//
-//  Created by Matt on 7/1/16.
-//  Copyright © 2016 Matt. All rights reserved.
-//
+/*
+ * Copyright (C) 2016  Matt Smith
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #include "ActorSystem.h"
 #include "Actor.h"
@@ -13,9 +23,12 @@
 
 ActorSystem::ActorSystem(const std::string name, size_t numThreads) : systemName(name), actorIdCounter(0), running(true),
     pendingJobs(numThreads), pendingJobCV(numThreads), pendingJobMutex(numThreads), logger(nullptr), messageCount(0) {
+        
+    // Activate thread pool
     for (size_t i=0; i<numThreads; i++) {
         threadPool.push_back(std::thread(&ActorSystem::threadPoolExecutor, this, i));
     }
+    
     srand(time(NULL));
 }
 
@@ -112,7 +125,7 @@ const ActorRef ActorSystem::createActor(Actor* actor) {
 }
 
 // ActorSystem message receiver which then routes to actor mailboxes
-void ActorSystem::send(const ActorRef& sender, const ActorRef* receiver, const ActorMessage& msg) {
+void ActorSystem::send(const ActorRef& sender, const ActorRef* receiver, const ActorMessage* msg) {
     if (receiver == nullptr) {
         throw std::runtime_error("Got null receiver reference in ActorSystem::send");
     }
@@ -137,7 +150,7 @@ void ActorSystem::send(const ActorRef& sender, const ActorRef* receiver, const A
 // Generates a unique actor id
 std::string ActorSystem::generateActorId() {
     size_t id = actorIdCounter++;
-    std::string strid = systemName;
+    std::string strid = systemName + "-actor-";
     strid += std::to_string(id);
     return strid;
 }

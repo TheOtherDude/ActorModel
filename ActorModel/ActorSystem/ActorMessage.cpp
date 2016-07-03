@@ -16,19 +16,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef TestActor2_h
-#define TestActor2_h
+#include "ActorMessage.h"
 
-#include <iostream>
-#include "Actor.h"
-
-class TestActor2 : public Actor {
-public:
-    TestActor2();
-    size_t count = 0;
-    size_t limit = 5;
+ActorMessage::ActorMessage(const MessageOpts opts) : opts(opts) {
     
-    void receive(const ActorRef& sender, const ActorMessage* msg) override;
-};
+}
 
-#endif /* TestActor2_h */
+ActorMessage::~ActorMessage() {
+    
+}

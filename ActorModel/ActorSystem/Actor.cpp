@@ -1,13 +1,24 @@
-//
-//  Actor.cpp
-//  ActorModel
-//
-//  Created by Matt on 7/1/16.
-//  Copyright © 2016 Matt. All rights reserved.
-//
+/*
+ * Copyright (C) 2016  Matt Smith
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #include "Actor.h"
 #include "ThreadActor.h"
+#include "ActorMessage.h"
 
 Actor::Actor() : actorSystem(nullptr), threadActor(nullptr) {
     
@@ -31,6 +42,9 @@ bool Actor::dequeueAndExecute(ThreadActor* thread, std::atomic<size_t>& messageC
                 MailboxMessage_t msg = mailbox.pop();
                 receive(ActorRef(msg.senderId, actorSystem), msg.msg);
                 messageCount++;
+                if (msg.msg->opts == ActorMessage::MessageOpts::DELETE_AFTER_USE) {
+                    delete msg.msg;
+                }
             }
         }
         catch (std::runtime_error& e) {
@@ -59,8 +73,8 @@ void Actor::setActorSystem(ActorSystem* actorSystem) {
     }
 }
 
-// Public actor send method
-void Actor::send(const ActorRef& sender, const ActorMessage& msg) {
+// Internal use actor send method. Use an ActorRef to properly send messages
+void Actor::send(const ActorRef& sender, const ActorMessage* msg) {
     if (sender.actorSystem->systemName.compare(this->actorSystem->systemName)) {
         const std::string err = "Got message from a different actor system in: " + this->actorId;
         throw std::runtime_error(err);

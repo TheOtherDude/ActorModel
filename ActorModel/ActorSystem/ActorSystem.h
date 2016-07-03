@@ -1,10 +1,20 @@
-//
-//  ActorSystem.hpp
-//  ActorModel
-//
-//  Created by Matt on 7/1/16.
-//  Copyright © 2016 Matt. All rights reserved.
-//
+/*
+ * Copyright (C) 2016  Matt Smith
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 #ifndef ActorSystem_h
 #define ActorSystem_h
@@ -26,6 +36,11 @@ class Actor;
 class LoggingActor;
 class ThreadActor;
 
+/*
+ * ActorSystem
+ * The ActorSystem manages the entire lifecycle of the actors
+ * from creation and message routing to job scheduling.
+ */
 class ActorSystem {
     public:
         // Actor system name
@@ -48,7 +63,7 @@ class ActorSystem {
         std::vector<std::thread> threadPool;
     
         // Job queues for the thread pool
-        std::vector<Shared_Queue<Actor*>> pendingJobs;
+        std::vector<SharedQueue<Actor*>> pendingJobs;
     
         // Condition variables indicating job ready
         std::vector<std::condition_variable> pendingJobCV;
@@ -68,10 +83,10 @@ class ActorSystem {
         void threadPoolExecutor(const size_t threadId);
     
         // Called by an ActorRef to send a message
-        void send(const ActorRef& sender, const ActorRef* receiver, const ActorMessage& msg);
+        void send(const ActorRef& sender, const ActorRef* receiver, const ActorMessage* msg);
     
     public:
-        // Creates the actor system
+        // Creates the actor system and internal thread pool
         ActorSystem(const std::string name, size_t numThreads);
     
         ~ActorSystem();
