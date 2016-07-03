@@ -16,6 +16,7 @@
 		456737B21D27C34D00D9BE2E /* LoggingActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456737B01D27C34D00D9BE2E /* LoggingActor.cpp */; };
 		45B533B61D282DC200AFB295 /* ThreadActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B533B41D282DC200AFB295 /* ThreadActor.cpp */; };
 		45B533B91D28535400AFB295 /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = 45B533B81D28535400AFB295 /* makefile */; };
+		45D53EFC1D28F7B3003F6F87 /* TestActor3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45D53EFA1D28F7B3003F6F87 /* TestActor3.cpp */; };
 		45E8220E1D28BEA4000DDC93 /* StringMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E8220C1D28BEA4000DDC93 /* StringMessage.cpp */; };
 		45E822101D28BF24000DDC93 /* ActorMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E8220F1D28BF24000DDC93 /* ActorMessage.cpp */; };
 /* End PBXBuildFile section */
@@ -52,6 +53,8 @@
 		45B533B41D282DC200AFB295 /* ThreadActor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadActor.cpp; sourceTree = "<group>"; };
 		45B533B51D282DC200AFB295 /* ThreadActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadActor.h; sourceTree = "<group>"; };
 		45B533B81D28535400AFB295 /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
+		45D53EFA1D28F7B3003F6F87 /* TestActor3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestActor3.cpp; sourceTree = "<group>"; };
+		45D53EFB1D28F7B3003F6F87 /* TestActor3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestActor3.h; sourceTree = "<group>"; };
 		45E8220C1D28BEA4000DDC93 /* StringMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringMessage.cpp; sourceTree = "<group>"; };
 		45E8220D1D28BEA4000DDC93 /* StringMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringMessage.h; sourceTree = "<group>"; };
 		45E8220F1D28BF24000DDC93 /* ActorMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActorMessage.cpp; sourceTree = "<group>"; };
@@ -93,6 +96,8 @@
 				456737A31D277DC900D9BE2E /* TestActor.h */,
 				456737AC1D27979900D9BE2E /* TestActor2.cpp */,
 				456737AD1D27979900D9BE2E /* TestActor2.h */,
+				45D53EFA1D28F7B3003F6F87 /* TestActor3.cpp */,
+				45D53EFB1D28F7B3003F6F87 /* TestActor3.h */,
 				45B533B71D28524A00AFB295 /* ActorSystem */,
 			);
 			path = ActorModel;
@@ -188,6 +193,7 @@
 				456737B21D27C34D00D9BE2E /* LoggingActor.cpp in Sources */,
 				45E8220E1D28BEA4000DDC93 /* StringMessage.cpp in Sources */,
 				456737A81D27837700D9BE2E /* ActorRef.cpp in Sources */,
+				45D53EFC1D28F7B3003F6F87 /* TestActor3.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

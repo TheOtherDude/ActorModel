@@ -43,6 +43,11 @@ class ThreadActor;
  */
 class ActorSystem {
     public:
+        enum class ActorSystemStrategy {
+            THROUGHPUT, // Prefers high throughput versus overall actor latency
+            RESPONSIVE, // Prefers actor responsiveness over throughput
+        };
+    
         // Actor system name
         const std::string systemName;
     
@@ -75,19 +80,42 @@ class ActorSystem {
         std::mutex createActorMutex;
     
         // Logging Actor
-        Actor* logger;
+        Actor* loggingActor;
+    
+        // Limit on how many messages to execute per actor scheduling
+        size_t batchExecutionLimit;
     
         std::atomic<size_t> messageCount;
+    
+        // Does some early actor system setup
+        void initActorSystem(size_t numThreads, const ActorSystemStrategy strategy);
+    
+        // Initializes specific strategies for the actor system
+        void initSystemProfile(const ActorSystemStrategy strategy);
+    
+        // Initializes the thread pool
+        void initThreadPool(size_t numThreads);
     
         // Main loop for the thread pool
         void threadPoolExecutor(const size_t threadId);
     
+        // Executes pending jobs a given thread
+        void threadExecute(ThreadActor* threadActor, const size_t threadId);
+    
+        // Randomly schedules an actor to a thread
+        void scheduleRandom(Actor* target);
+    
+        // Schedules an actor to a specific thread id
+        void scheduleThread(size_t threadId, Actor* target);
+    
         // Called by an ActorRef to send a message
-        void send(const ActorRef& sender, const ActorRef* receiver, const ActorMessage* msg);
+        void routeMessage(const ActorRef& sender, const ActorRef* receiver, const ActorMessage* msg);
     
     public:
         // Creates the actor system and internal thread pool
+        ActorSystem(const std::string name);
         ActorSystem(const std::string name, size_t numThreads);
+        ActorSystem(const std::string name, const ActorSystemStrategy strategy);
     
         ~ActorSystem();
     

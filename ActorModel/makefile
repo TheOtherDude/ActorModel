@@ -19,7 +19,7 @@
 CC=g++
 CFLAGS=-std=c++11 -Ofast -march=native -mtune=native -I./ActorSystem -c -Wall
 LDFLAGS=-lpthread
-SOURCES=main.cpp TestActor.cpp TestActor2.cpp ActorSystem/ActorSystem.cpp ActorSystem/Actor.cpp ActorSystem/ActorRef.cpp ActorSystem/ActorMessage.cpp ActorSystem/LoggingActor.cpp ActorSystem/ThreadActor.cpp ActorSystem/StringMessage.cpp
+SOURCES=main.cpp TestActor.cpp TestActor2.cpp TestActor3.cpp ActorSystem/ActorSystem.cpp ActorSystem/Actor.cpp ActorSystem/ActorRef.cpp ActorSystem/ActorMessage.cpp ActorSystem/LoggingActor.cpp ActorSystem/ThreadActor.cpp ActorSystem/StringMessage.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=actor.x
 

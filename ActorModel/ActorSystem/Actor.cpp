@@ -18,7 +18,7 @@
 
 #include "Actor.h"
 #include "ThreadActor.h"
-#include "ActorMessage.h"
+#include "StringMessage.h"
 
 Actor::Actor() : actorSystem(nullptr), threadActor(nullptr) {
     
@@ -28,37 +28,70 @@ Actor::~Actor() {
     
 }
 
-// Called by ActorSystem to execute messages
-bool Actor::dequeueAndExecute(ThreadActor* thread, std::atomic<size_t>& messageCount, size_t& remaining, const size_t limit) {
-    // Acquire the actor's lock
-    std::unique_lock<std::mutex> lock(threadMutex, std::defer_lock);
-    if (lock.try_lock()) {
+// Called ActorSystem thread to acquire the actor's lock
+bool Actor::acquireLock(ThreadActor* thread) {
+    if (threadMutex.try_lock()) {
         // Set this actor's thread
         threadActor = thread;
-        
-        // Execute messages
-        try {
-            for (size_t i=0; i<limit; i++) {
-                MailboxMessage_t msg = mailbox.pop();
-                receive(ActorRef(msg.senderId, actorSystem), msg.msg);
-                messageCount++;
-                if (msg.msg->opts == ActorMessage::MessageOpts::DELETE_AFTER_USE) {
-                    delete msg.msg;
-                }
-            }
-        }
-        catch (std::runtime_error& e) {
-            // Queue empty
-        }
-        
-        threadActor = nullptr;
-        remaining = mailbox.size();
         return true;
     }
     else {
-        // Lock acquire failed
         return false;
     }
+}
+
+// Called ActorSystem thread to release the actor's lock
+void Actor::releaseLock() {
+    threadMutex.unlock();
+}
+
+// Called by ActorSystem to execute messages
+bool Actor::execute(ThreadActor* thread, std::atomic<size_t>& messageCount, size_t& remaining, const size_t limit) {
+    // Execute messages
+    // Some top scope variables for error resolution
+    bool cleanupMessage = false;
+    const ActorMessage* lastMsg = nullptr;
+    
+    try {
+        for (size_t i=0; (!mailbox.isEmpty() && i<limit); i++) {
+            // Dequeue message
+            cleanupMessage = false;
+            lastMsg = nullptr;
+            MailboxMessage_t msg = mailbox.pop();
+            
+            // Save this message in case of an exception so we don't leak
+            lastMsg = msg.msg;
+            if (msg.msg->opts == ActorMessage::MessageOpts::DELETE_AFTER_USE) {
+                cleanupMessage = true;
+            }
+            
+            // Execute actor instance
+            receive(ActorRef(msg.senderId, actorSystem), msg.msg);
+            
+            // This is only here for science
+            messageCount++;
+            
+            // If the message generator indicated cleanup now is the right time
+            if (cleanupMessage) {
+                delete msg.msg;
+            }
+        }
+    }
+    catch (SharedQueue<Actor*>::QueueEmpty& e) {}
+    // Exception catch for the actor
+    catch (std::exception& e) {
+        const std::string err = "Thread-" + std::to_string(thread->threadId) + " Execution Error in " + actorId + ": " + e.what();
+        getActorSystem()->getLoggingActor().send(thread->self(), new StringMessage(err));
+        threadActor = nullptr;
+        if (cleanupMessage && (lastMsg != nullptr)) {
+            delete lastMsg;
+        }
+        return false;
+    }
+    
+    threadActor = nullptr;
+    remaining = mailbox.size();
+    return true;
 }
 
 // Should only be called by ActorSystem on object creation

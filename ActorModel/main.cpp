@@ -25,6 +25,7 @@
 #include "StringMessage.h"
 #include "TestActor.h"
 #include "TestActor2.h"
+#include "TestActor3.h"
 
 std::atomic<size_t> numMessagesSent;
 
@@ -42,13 +43,14 @@ void generateMessages(const std::vector<ActorRef> actorRefs, size_t amount) {
 }
 
 int main(int argc, const char * argv[]) {
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
     // Spawn an actor system
-    ActorSystem actorSystem("testSystem", 4);
+    ActorSystem actorSystem("testSystem");
     
     // Heres some actors
     ActorRef test = actorSystem.createActor(new TestActor());
     ActorRef test2 = actorSystem.createActor(new TestActor2());
+    ActorRef test3 = actorSystem.createActor(new TestActor3());
     
     // Heres a lot more actors
     size_t actorsAmount = 2000;
@@ -65,6 +67,9 @@ int main(int argc, const char * argv[]) {
     actorSystem.getLoggingActor().send(test, new StringMessage("Main: Sending logger an invalid message..."));
     actorSystem.getLoggingActor().send(test, new ActorMessage());
     numMessagesSent += 2;
+    
+    // Test thread executor error handling
+    test3.send(test3, new ActorMessage());
     
     // Heres some message generating threads
     size_t numThreads = 6;

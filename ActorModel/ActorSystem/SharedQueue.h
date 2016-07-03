@@ -29,6 +29,11 @@
  */
 template <typename T>
 class SharedQueue {
+public:
+    enum class QueueEmpty {
+        EMPTY,
+    };
+
 private:
     std::queue<T> sharedQueue;
     std::mutex queueMutex;
@@ -47,7 +52,7 @@ public:
                 return result;
             }
             else {
-                throw std::runtime_error("Shared Queue is Empty");
+                throw QueueEmpty(QueueEmpty::EMPTY);
             }
         }
         catch (std::runtime_error e) {

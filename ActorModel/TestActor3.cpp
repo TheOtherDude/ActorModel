@@ -16,27 +16,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "ActorRef.h"
-#include "ActorSystem.h"
-#include "ActorMessage.h"
+#include "TestActor3.h"
 
-ActorRef::ActorRef(const std::string id, ActorSystem* actorSystem) : actorId(id), actorSystem(actorSystem) {
-    
+TestActor3::TestActor3() {
 }
 
-ActorRef::ActorRef(const ActorRef* ref) : actorId(ref->actorId), actorSystem(ref->actorSystem) {
-    if (ref == nullptr) {
-        throw std::runtime_error("Got null pointer in ActorRef::ActorRef");
-    }
-}
-
-// Public actor send method
-void ActorRef::send(const ActorRef& sender, const ActorMessage* msg) const {
-    actorSystem->routeMessage(sender, this, msg);
-}
-
-// Convenience Method (Send to self)
-void ActorRef::send(const ActorMessage* msg) const {
-    ActorRef self(this);
-    actorSystem->routeMessage(self, this, msg);
+void TestActor3::receive(const ActorRef& sender, const ActorMessage* msg) {
+    throw std::invalid_argument("Simulated unexpected error");
 }

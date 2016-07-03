@@ -62,8 +62,14 @@ public:
         // Used to set the actor system this actor is managed by
         virtual void setActorSystem(ActorSystem* actorSystem) final;
     
+        // Called ActorSystem thread to acquire the actor's lock
+        bool acquireLock(ThreadActor* thread);
+    
+        // Called ActorSystem thread to release the actor's lock
+        void releaseLock();
+    
         // Called by ActorSystem to execute messages
-        bool dequeueAndExecute(ThreadActor* thread, std::atomic<size_t>& messageCount, size_t& remaining, const size_t limit);
+        bool execute(ThreadActor* thread, std::atomic<size_t>& messageCount, size_t& remaining, const size_t limit);
     
         // Internal actor send method
         virtual void send(const ActorRef& sender, const ActorMessage* msg) final;
