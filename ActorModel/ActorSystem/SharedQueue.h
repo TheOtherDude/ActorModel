@@ -66,7 +66,6 @@ public:
     }
     
     bool isEmpty() {
-        std::lock_guard<std::mutex> lock(queueMutex);
         return sharedQueue.empty();
     }
     

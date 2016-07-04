@@ -21,6 +21,7 @@
 
 #include <string>
 #include <thread>
+//#include "concurrentqueue.h"
 #include "SharedQueue.h"
 
 #include "ActorSystem.h"
@@ -57,6 +58,7 @@ public:
         } MailboxMessage_t;
     
         // Actor Message Queue
+        //moodycamel::ConcurrentQueue<MailboxMessage_t> mailbox;
         SharedQueue<MailboxMessage_t> mailbox;
     
         // Used to set the actor system this actor is managed by

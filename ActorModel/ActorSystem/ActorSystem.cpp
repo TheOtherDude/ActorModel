@@ -122,7 +122,7 @@ void ActorSystem::threadPoolExecutor(const size_t threadId) {
             // Execute pending jobs
             threadExecute(threadActor, threadId);
         }
-        catch (SharedQueue<Actor*>::QueueEmpty& e) {}
+        //catch (SharedQueue<Actor*>::QueueEmpty& e) {}
         catch (std::exception& e) {
             // TODO: Kill and restart thread etc or just crash.
             const std::string err = "Thread-" + std::to_string(threadActor->threadId) + " Execution Error in threadPoolExecutor: " + e.what();
@@ -136,7 +136,6 @@ void ActorSystem::threadExecute(ThreadActor* threadActor, const size_t threadId)
     // Execute as many pending jobs as possible consecutively between cv waits
     while (!pendingJobs[threadId].isEmpty()) {
         Actor* target = pendingJobs[threadId].pop();
-        
         if (target == nullptr) {
             // Assume the actor was destroyed
             continue;

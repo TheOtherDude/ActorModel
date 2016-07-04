@@ -14,6 +14,7 @@
 		456737AB1D2783D000D9BE2E /* ActorSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456737A91D2783D000D9BE2E /* ActorSystem.cpp */; };
 		456737AE1D27979900D9BE2E /* TestActor2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456737AC1D27979900D9BE2E /* TestActor2.cpp */; };
 		456737B21D27C34D00D9BE2E /* LoggingActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456737B01D27C34D00D9BE2E /* LoggingActor.cpp */; };
+		45A74AA11D29A9AC00A07DEA /* ScatterActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45A74A9F1D29A9AC00A07DEA /* ScatterActor.cpp */; };
 		45B533B61D282DC200AFB295 /* ThreadActor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B533B41D282DC200AFB295 /* ThreadActor.cpp */; };
 		45B533B91D28535400AFB295 /* makefile in Sources */ = {isa = PBXBuildFile; fileRef = 45B533B81D28535400AFB295 /* makefile */; };
 		45D53EFC1D28F7B3003F6F87 /* TestActor3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45D53EFA1D28F7B3003F6F87 /* TestActor3.cpp */; };
@@ -50,6 +51,9 @@
 		456737AF1D27984400D9BE2E /* SharedQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedQueue.h; sourceTree = "<group>"; };
 		456737B01D27C34D00D9BE2E /* LoggingActor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoggingActor.cpp; sourceTree = "<group>"; };
 		456737B11D27C34D00D9BE2E /* LoggingActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggingActor.h; sourceTree = "<group>"; };
+		45A74A9E1D299D7200A07DEA /* concurrentqueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = concurrentqueue.h; sourceTree = "<group>"; };
+		45A74A9F1D29A9AC00A07DEA /* ScatterActor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScatterActor.cpp; sourceTree = "<group>"; };
+		45A74AA01D29A9AC00A07DEA /* ScatterActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScatterActor.h; sourceTree = "<group>"; };
 		45B533B41D282DC200AFB295 /* ThreadActor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadActor.cpp; sourceTree = "<group>"; };
 		45B533B51D282DC200AFB295 /* ThreadActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadActor.h; sourceTree = "<group>"; };
 		45B533B81D28535400AFB295 /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 				456737AD1D27979900D9BE2E /* TestActor2.h */,
 				45D53EFA1D28F7B3003F6F87 /* TestActor3.cpp */,
 				45D53EFB1D28F7B3003F6F87 /* TestActor3.h */,
+				45A74A9F1D29A9AC00A07DEA /* ScatterActor.cpp */,
+				45A74AA01D29A9AC00A07DEA /* ScatterActor.h */,
 				45B533B71D28524A00AFB295 /* ActorSystem */,
 			);
 			path = ActorModel;
@@ -121,6 +127,7 @@
 				456737AF1D27984400D9BE2E /* SharedQueue.h */,
 				45E8220C1D28BEA4000DDC93 /* StringMessage.cpp */,
 				45E8220D1D28BEA4000DDC93 /* StringMessage.h */,
+				45A74A9E1D299D7200A07DEA /* concurrentqueue.h */,
 			);
 			name = ActorSystem;
 			path = ActorModel/ActorSystem;
@@ -188,6 +195,7 @@
 				456737991D277BD000D9BE2E /* main.cpp in Sources */,
 				456737AB1D2783D000D9BE2E /* ActorSystem.cpp in Sources */,
 				45E822101D28BF24000DDC93 /* ActorMessage.cpp in Sources */,
+				45A74AA11D29A9AC00A07DEA /* ScatterActor.cpp in Sources */,
 				456737A11D277BDE00D9BE2E /* Actor.cpp in Sources */,
 				456737A41D277DC900D9BE2E /* TestActor.cpp in Sources */,
 				456737B21D27C34D00D9BE2E /* LoggingActor.cpp in Sources */,

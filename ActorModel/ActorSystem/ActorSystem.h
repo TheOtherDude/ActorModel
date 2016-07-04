@@ -31,6 +31,7 @@
 #include <ctime>
 
 #include "ActorRef.h"
+//#include "concurrentqueue.h"
 #include "SharedQueue.h"
 class Actor;
 class LoggingActor;
@@ -68,6 +69,7 @@ class ActorSystem {
         std::vector<std::thread> threadPool;
     
         // Job queues for the thread pool
+        //std::vector<moodycamel::ConcurrentQueue<Actor*>> pendingJobs;
         std::vector<SharedQueue<Actor*>> pendingJobs;
     
         // Condition variables indicating job ready
@@ -95,6 +97,9 @@ class ActorSystem {
     
         // Initializes the thread pool
         void initThreadPool(size_t numThreads);
+    
+        // Main loop for a thread that periodically wakes up the pool
+        void threadPoolMonitor();
     
         // Main loop for the thread pool
         void threadPoolExecutor(const size_t threadId);

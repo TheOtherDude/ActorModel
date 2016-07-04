@@ -53,12 +53,11 @@ bool Actor::execute(ThreadActor* thread, std::atomic<size_t>& messageCount, size
     const ActorMessage* lastMsg = nullptr;
     
     try {
-        for (size_t i=0; (!mailbox.isEmpty() && i<limit); i++) {
-            // Dequeue message
-            cleanupMessage = false;
-            lastMsg = nullptr;
+        cleanupMessage = false;
+        lastMsg = nullptr;
+        for (size_t i=0; (!mailbox.isEmpty() && (i<limit)); i++) {
+            // Dequeue messages
             MailboxMessage_t msg = mailbox.pop();
-            
             // Save this message in case of an exception so we don't leak
             lastMsg = msg.msg;
             if (msg.msg->opts == ActorMessage::MessageOpts::DELETE_AFTER_USE) {

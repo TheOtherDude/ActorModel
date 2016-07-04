@@ -26,6 +26,7 @@
 #include "TestActor.h"
 #include "TestActor2.h"
 #include "TestActor3.h"
+#include "ScatterActor.h"
 
 std::atomic<size_t> numMessagesSent;
 
@@ -42,6 +43,20 @@ void generateMessages(const std::vector<ActorRef> actorRefs, size_t amount) {
     }
 }
 
+// Scatter-Gather Demo
+int main(int argc, const char * argv[]) {
+    srand((unsigned int)time(NULL));
+    ActorSystem actorSystem("Scatter-Gather tester");
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    // Create a scatter actor
+    ActorRef scatterMain = actorSystem.createActor(new ScatterActor());
+    
+    // Send an init message to itself which will then spawn other actors
+    scatterMain.send(scatterMain, new ScatterMsg(ScatterMsg::Type::INIT));
+    std::this_thread::sleep_for(std::chrono::seconds(60));
+}
+
+/*
 int main(int argc, const char * argv[]) {
     srand((unsigned int)time(NULL));
     // Spawn an actor system
@@ -97,3 +112,4 @@ int main(int argc, const char * argv[]) {
     
     return 0;
 }
+*/
